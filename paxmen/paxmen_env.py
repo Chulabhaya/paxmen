@@ -161,7 +161,9 @@ class PaxMen(MultiAgentEnv):
 
         # Spaces
         self.observation_spaces = {
-            a: Box(-1, 4, (2 * OBS_RADIUS + 1) * (2 * OBS_RADIUS + 1), dtype=jnp.uint8)
+            a: Box(
+                -1.0, 4.0, ((2 * OBS_RADIUS + 1) * (2 * OBS_RADIUS + 1),), dtype=jnp.float32
+            )
             for a in self.agents
         }
         self.action_spaces = {a: Discrete(N_ACTIONS) for a in self.agents}
@@ -213,10 +215,7 @@ class PaxMen(MultiAgentEnv):
         hub_right = hub_left + self.hub_size - 1
 
         def mk_arm(
-            name: str,
-            direction: str,
-            exit_offset: int,
-            corridor_len: int
+            name: str, direction: str, exit_offset: int, corridor_len: int
         ) -> ArmSpec:
             """Create corridor+room rectangles given hub geometry.
 
@@ -453,10 +452,7 @@ class PaxMen(MultiAgentEnv):
         return jnp.stack([rr.reshape(-1), cc.reshape(-1)], axis=-1)
 
     def _sample_unique_positions(
-        self,
-        key: chex.PRNGKey,
-        rect: Rect,
-        k: int
+        self, key: chex.PRNGKey, rect: Rect, k: int
     ) -> chex.Array:
         """Sample k unique random positions from within a rectangle.
 
@@ -473,9 +469,7 @@ class PaxMen(MultiAgentEnv):
         return coords[idx]
 
     def _respawn_dots_from_spec(
-        self,
-        key: chex.PRNGKey,
-        spec: LayoutSpec
+        self, key: chex.PRNGKey, spec: LayoutSpec
     ) -> Tuple[chex.Array, chex.Array]:
         """Spawn dots in each room according to the layout specification.
 
@@ -549,10 +543,7 @@ class PaxMen(MultiAgentEnv):
 
     @partial(jax.jit, static_argnums=0)
     def step_env(
-        self,
-        key: chex.PRNGKey,
-        state: State,
-        actions: Dict[str, chex.Array]
+        self, key: chex.PRNGKey, state: State, actions: Dict[str, chex.Array]
     ) -> Tuple[Dict[str, chex.Array], State, Dict[str, float], Dict[str, bool], Dict]:
         """Execute one environment step.
 
@@ -908,10 +899,7 @@ class PaxMenCTRolloutManager(JaxMARLWrapper):
 cmap = ListedColormap(["black", "white", "red", "yellow"])
 
 
-def visualize_paxmen_state(
-    state: State,
-    save_path: str = None
-) -> None:
+def visualize_paxmen_state(state: State, save_path: str = None) -> None:
     """Convert JAX environment state to visualization and save or display.
 
     Creates a visual representation of the PaxMen environment state including:
