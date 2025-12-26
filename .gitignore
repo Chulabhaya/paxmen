@@ -1,0 +1,11 @@
+**/__pycache__/
+wandb/
+outputs/
+models/
+.vscode/
+
+# Python packaging
+dist/
+build/
+*.egg-info/
+*.egg
