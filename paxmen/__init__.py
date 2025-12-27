@@ -17,16 +17,3 @@ __all__ = [
     "State",
     "visualize_paxmen_state",
 ]
-
-# Register the environment with JaxMARL
-try:
-    from jaxmarl import register
-
-    # Default registration (4 agents)
-    register(
-        env_id="PaxMen-v0",
-        entry_point="paxmen.paxmen_env:PaxMen",
-        kwargs={"num_agents": 4},
-    )
-except ImportError:
-    pass  # JaxMARL not installed
